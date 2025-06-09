@@ -1,16 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const startDate = new Date('2019-03-06T20:00:00'); 
+    const startDate = new Date('2019-03-06T20:00:00');
 
     const revealButton = document.getElementById('revealButton');
     const initialScreen = document.getElementById('initial-screen');
     const mainContent = document.getElementById('main-content');
     const counterElement = document.getElementById('counter');
-    
-
     const carouselSlides = document.querySelectorAll('.carousel-slide');
     const heartsContainer = document.getElementById('hearts-container');
+    const romanticTextElement = document.getElementById('romantic-text');
+    const finalSurpriseContainer = document.getElementById('final-surprise');
+
     let currentSlideIndex = 0;
+    const romanticText = romanticTextElement.innerHTML; // Guarda o texto original
+    romanticTextElement.innerHTML = ''; // Limpa para o efeito
 
     function updateCounter() {
         const now = new Date();
@@ -23,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showNextSlide() {
-        if (carouselSlides.length === 0) return; 
+        if (carouselSlides.length === 0) return;
         carouselSlides[currentSlideIndex].classList.remove('active');
         currentSlideIndex = (currentSlideIndex + 1) % carouselSlides.length;
         carouselSlides[currentSlideIndex].classList.add('active');
@@ -41,9 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 7000);
     }
 
+    
+    function typeWriter(element, text, i = 0) {
+        element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+
+        if (i < text.length - 1) {
+            setTimeout(() => typeWriter(element, text, i + 1), 50); 
+        } else {
+            
+            element.innerHTML = text;
+        }
+    }
+
     revealButton.addEventListener('click', () => {
-        initialScreen.style.display = 'none';
-        mainContent.style.display = 'flex';
+        initialScreen.classList.add('fade-out');
+
+        setTimeout(() => {
+            initialScreen.style.display = 'none';
+            mainContent.style.display = 'flex';
+            
+            
+            typeWriter(romanticTextElement, romanticText);
+
+        }, 1000); 
 
         // Inicia o contador de tempo
         setInterval(updateCounter, 1000);
